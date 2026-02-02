@@ -6,35 +6,18 @@ const Typing = {
 	currentHighlightIndex: -1,
 	updatePending: false,
 
-	// 2バイト文字（マルチバイト文字）の判定
 	isMultiByteChar(char) {
-		// ASCII文字以外を2バイト文字として判定
-		// 日本語（ひらがな、カタカナ、漢字）、中国語、韓国語等を含む
-		return /[^\x00-\x7F]/.test(char);
+		return char.charCodeAt(0) > 127;
 	},
 
-	// 現在のモードがTypeWellモードかどうかを判定
 	isTypeWellMode() {
-		if (DOM.langSel.value === "typewell" || DOM.langSel.value === "typewell-english-words") {
-			return true;
-		}
-
-		// カスタムコードでTypeWellモードが選択されている場合
-		if (DOM.langSel.value === "custom") {
-			return CustomCode.getSelectedCustomMode() === "typewell";
-		}
-
-		// 保存されたカスタムコードでTypeWellモードの場合
-		const codes = Storage.getSavedCodes();
-		if (codes[DOM.langSel.value]) {
-			return CustomCode.getCustomCodeMode(DOM.langSel.value) === "typewell";
-		}
-
-		// デフォルト言語でTypewellモードが選択されている場合
-		if (DOM.langSel.value !== "custom" && DOM.langSel.value !== "typewell" && DOM.langSel.value !== "typewell-english-words" && DOM.langSel.value !== "initial-speed") {
-			return Utils.getSelectedDefaultMode() === "typewell";
-		}
-
+		const lang = DOM.langSel.value;
+		
+		if (lang === "typewell" || lang === "typewell-english-words") return true;
+		if (lang === "custom") return CustomCode.getSelectedCustomMode() === "typewell";
+		if (Storage.getSavedCodes()[lang]) return CustomCode.getCustomCodeMode(lang) === "typewell";
+		if (SNIPPETS[lang]) return Utils.getSelectedDefaultMode() === "typewell";
+		
 		return false;
 	},
 
@@ -1237,102 +1220,101 @@ const Typing = {
 
 	// 実際の更新処理
 	performUpdate() {
+		const inputLength = APP_STATE.inputBuffer.length;
+		const targets = this.cachedTargets;
+		const maxIndex = Math.max(inputLength + 1, this.lastUpdateLength || 0);
+		
 		let correctCount = 0;
 		let currentCorrectPosition = 0;
 
-		// 変更が必要な範囲のみ更新
-		const inputLength = APP_STATE.inputBuffer.length;
-		const targets = this.cachedTargets;
-
-		for (
-			let i = 0;
-			i < Math.max(inputLength + 1, this.lastUpdateLength || 0);
-			i++
-		) {
+		for (let i = 0; i < maxIndex; i++) {
 			const span = targets[i];
 			if (!span) break;
 
 			if (i < inputLength) {
-				const expectedChar = span.dataset.char;
-				const typedChar = APP_STATE.inputBuffer[i];
-
-				// TypeWell英単語モードおよび小文字モードでは大文字・小文字を区別しない判定
-				let isMatch = false;
-				if (DOM.langSel.value === "typewell-english-words") {
-					if (/^[a-zA-Z]$/.test(expectedChar)) {
-						isMatch = typedChar.toLowerCase() === expectedChar.toLowerCase();
-					} else {
-						isMatch = typedChar === expectedChar;
-					}
-				} else if (DOM.langSel.value === "typewell" && Utils.getSelectedTypeWellMode() === "lowercase") {
-					if (/^[a-z]$/.test(expectedChar)) {
-						isMatch = typedChar.toLowerCase() === expectedChar;
-					} else {
-						isMatch = typedChar === expectedChar;
-					}
-				} else {
-					isMatch = typedChar === expectedChar;
-				}
-
-				if (isMatch) {
-					span.className = `char correct${span.classList.contains("newline") ? " newline" : ""}`;
-					correctCount++;
-					if (currentCorrectPosition === i) {
-						currentCorrectPosition = i + 1;
-					}
-				} else {
-					span.className = `char incorrect${span.classList.contains("newline") ? " newline" : ""}`;
-
-					// 空白や改行の誤入力を視覚化
-					if (expectedChar === " " || expectedChar === "\n") {
-						if (typedChar === " ") {
-							span.textContent = "␣";
-						} else if (typedChar === "\n") {
-							span.textContent = "↵";
-						} else if (typedChar === "\t") {
-							span.textContent = "→";
-						} else {
-							span.textContent = typedChar;
-						}
-					}
-				}
+				const result = this._updateTypedChar(span, APP_STATE.inputBuffer[i], i, currentCorrectPosition);
+				correctCount += result.isMatch ? 1 : 0;
+				if (result.advancePosition) currentCorrectPosition = i + 1;
 			} else if (i === inputLength || i < (this.lastUpdateLength || 0)) {
-				span.className = `char pending${span.classList.contains("newline") ? " newline" : ""}`;
-				// 元のテキストに戻す
-				if (span.dataset.char === "\n") {
-					span.textContent = "⏎";
-				} else {
-					// TypeWell小文字モードでは大文字表示を維持
-					if (DOM.langSel.value === "typewell" && Utils.getSelectedTypeWellMode() === "lowercase" && /^[a-z]$/.test(span.dataset.char)) {
-						span.textContent = span.dataset.char.toUpperCase();
-					} else {
-						span.textContent = span.dataset.char;
-					}
-				}
+				this._resetCharToPending(span);
 			}
 		}
 
 		this.lastUpdateLength = inputLength;
-
-		// WPMカウント用の正しい文字数を更新
-		if (currentCorrectPosition > APP_STATE.maxCorrectPosition) {
-			const newCharacters =
-				currentCorrectPosition - APP_STATE.maxCorrectPosition;
-			APP_STATE.correctCharacters += newCharacters;
-			APP_STATE.maxCorrectPosition = currentCorrectPosition;
-		}
-
+		this._updateWpmCounter(currentCorrectPosition);
 		this.highlightCurrent();
 		this.updateStats(correctCount, targets.length);
+		this._checkCompletion(correctCount, targets.length);
+	},
 
-		// TypeWellモードで行完了チェック
-		if ((DOM.langSel.value === "typewell" || DOM.langSel.value === "typewell-english-words") && APP_STATE.startTime) {
+	_updateTypedChar(span, typedChar, index, currentCorrectPosition) {
+		const expectedChar = span.dataset.char;
+		const isMatch = this._checkCharMatch(typedChar, expectedChar);
+		const isNewline = span.classList.contains("newline");
+
+		if (isMatch) {
+			span.className = isNewline ? "char correct newline" : "char correct";
+			return { isMatch: true, advancePosition: currentCorrectPosition === index };
+		} else {
+			span.className = isNewline ? "char incorrect newline" : "char incorrect";
+			this._showTypedCharVisualization(span, expectedChar, typedChar);
+			return { isMatch: false, advancePosition: false };
+		}
+	},
+
+	_checkCharMatch(typedChar, expectedChar) {
+		if (DOM.langSel.value === "typewell-english-words" && /^[a-zA-Z]$/.test(expectedChar)) {
+			return typedChar.toLowerCase() === expectedChar.toLowerCase();
+		}
+		if (DOM.langSel.value === "typewell" && Utils.getSelectedTypeWellMode() === "lowercase" && /^[a-z]$/.test(expectedChar)) {
+			return typedChar.toLowerCase() === expectedChar;
+		}
+		return typedChar === expectedChar;
+	},
+
+	_showTypedCharVisualization(span, expectedChar, typedChar) {
+		if (expectedChar !== " " && expectedChar !== "\n") return;
+		
+		const visualMap = { " ": "␣", "\n": "↵", "\t": "→" };
+		span.textContent = visualMap[typedChar] || typedChar;
+	},
+
+	_resetCharToPending(span) {
+		const isNewline = span.classList.contains("newline");
+		span.className = isNewline ? "char pending newline" : "char pending";
+		
+		if (span.dataset.char === "\n") {
+			span.textContent = "⏎";
+		} else if (this._shouldShowUppercase(span.dataset.char)) {
+			span.textContent = span.dataset.char.toUpperCase();
+		} else {
+			span.textContent = span.dataset.char;
+		}
+	},
+
+	_shouldShowUppercase(char) {
+		return DOM.langSel.value === "typewell" && 
+			Utils.getSelectedTypeWellMode() === "lowercase" && 
+			/^[a-z]$/.test(char);
+	},
+
+	_updateWpmCounter(currentCorrectPosition) {
+		if (currentCorrectPosition > APP_STATE.maxCorrectPosition) {
+			APP_STATE.correctCharacters += currentCorrectPosition - APP_STATE.maxCorrectPosition;
+			APP_STATE.maxCorrectPosition = currentCorrectPosition;
+		}
+	},
+
+	_checkCompletion(correctCount, total) {
+		const inputLength = APP_STATE.inputBuffer.length;
+		const isTypeWell = DOM.langSel.value === "typewell" || DOM.langSel.value === "typewell-english-words";
+		
+		if (isTypeWell && APP_STATE.startTime) {
 			this.checkTypeWellLineCompletion();
 		}
-
-		// 完了チェック
-		if (inputLength >= targets.length && correctCount === targets.length) {
-			UI.showOverlay(correctCount, targets.length);
+		
+		if (inputLength >= total && correctCount === total) {
+			UI.showOverlay(correctCount, total);
 		}
 	},
 

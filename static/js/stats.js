@@ -358,38 +358,7 @@ const Stats = {
 				const historyId = `history-${languageId}-${part.partNumber}`;
 
 				if (isInitialSpeed) {
-					// Initial Speed専用表示
-					html += `
-                    <div class="part-section">
-                        <div class="part-header">
-                            <strong>Initial Speed Practice</strong>
-                            <div class="part-latest">
-                                📅 Latest: ${Utils.formatTimestamp(latestAttempt.timestamp)}<br>
-                                ⚡ Average: ${Utils.formatReactionTime(latestAttempt.averageTime * 1000)} • 🎯 ${latestAttempt.accuracy}% • 📊 ${latestAttempt.trials} trials<br>
-                                🏆 Best Average: ${Utils.formatReactionTime(bestAttempt.averageTime * 1000)} (${bestAttempt.attemptNumber}${Utils.getOrdinalSuffix(bestAttempt.attemptNumber)} attempt)<br>
-                                📊 Attempts: ${part.attempts.length}
-                            </div>
-                            ${
-															part.attempts.length > 1
-																? `
-                                <button class="history-toggle" onclick="Stats.toggleHistory('${historyId}')">
-                                    ▼ View History (${part.attempts.length} attempts)
-                                </button>
-                            `
-																: ""
-														}
-                        </div>
-                        ${
-													part.attempts.length > 1
-														? `
-                            <div class="part-history" id="${historyId}">
-                                ${this.generateInitialSpeedHistoryTable(part.attempts, historyId)}
-                            </div>
-                        `
-														: ""
-												}
-                    </div>
-                `;
+					html += this._buildInitialSpeedSection(part, latestAttempt, bestAttempt, historyId);
 				} else {
 					// 通常モード表示
 					html += `
@@ -549,6 +518,32 @@ const Stats = {
 
 			mistakeChartEl.innerHTML = html;
 		}
+	},
+
+	_buildInitialSpeedSection(part, latestAttempt, bestAttempt, historyId) {
+		const hasHistory = part.attempts.length > 1;
+		const historyButton = hasHistory 
+			? `<button class="history-toggle" onclick="Stats.toggleHistory('${historyId}')">▼ View History (${part.attempts.length} attempts)</button>`
+			: '';
+		const historySection = hasHistory
+			? `<div class="part-history" id="${historyId}">${this.generateInitialSpeedHistoryTable(part.attempts, historyId)}</div>`
+			: '';
+
+		return `
+			<div class="part-section">
+				<div class="part-header">
+					<strong>Initial Speed Practice</strong>
+					<div class="part-latest">
+						📅 Latest: ${Utils.formatTimestamp(latestAttempt.timestamp)}<br>
+						⚡ Average: ${Utils.formatReactionTime(latestAttempt.averageTime * 1000)} • 🎯 ${latestAttempt.accuracy}% • 📊 ${latestAttempt.trials} trials<br>
+						🏆 Best Average: ${Utils.formatReactionTime(bestAttempt.averageTime * 1000)} (${bestAttempt.attemptNumber}${Utils.getOrdinalSuffix(bestAttempt.attemptNumber)} attempt)<br>
+						📊 Attempts: ${part.attempts.length}
+					</div>
+					${historyButton}
+				</div>
+				${historySection}
+			</div>
+		`;
 	},
 
 	// Initial Speed統合ミス統計の取得
@@ -855,25 +850,28 @@ const Stats = {
 				let aVal, bVal;
 
 				switch (sortType) {
-					case "num":
+					case "num": {
 						aVal = parseInt(a.cells[columnIndex].textContent);
 						bVal = parseInt(b.cells[columnIndex].textContent);
 						break;
-					case "time":
-						// 反応時間をパースして比較（時間なので昇順が良い結果）
+					}
+					case "time": {
 						const aTimeStr = a.cells[columnIndex].textContent.replace("s", "");
 						const bTimeStr = b.cells[columnIndex].textContent.replace("s", "");
 						aVal = parseFloat(aTimeStr);
 						bVal = parseFloat(bTimeStr);
 						break;
-					case "acc":
+					}
+					case "acc": {
 						aVal = parseInt(a.cells[columnIndex].textContent.replace("%", ""));
 						bVal = parseInt(b.cells[columnIndex].textContent.replace("%", ""));
 						break;
-					case "trials":
+					}
+					case "trials": {
 						aVal = parseInt(a.cells[columnIndex].textContent);
 						bVal = parseInt(b.cells[columnIndex].textContent);
 						break;
+					}
 				}
 
 				if (sortType === "time") {

@@ -417,14 +417,12 @@ const UI = {
 
 	// Word Practice専用オーバーレイ表示
 	showWordPracticeOverlay(correct, total) {
-		// typing.jsで計算された統計を使用
 		const stats = APP_STATE.wordPracticeStats;
 		if (!stats) {
 			console.error("Word Practice統計が見つかりません");
 			return;
 		}
 
-		// 言語名の設定
 		const selectedSet = Utils.getSelectedWordPracticeSet();
 		const setNames = {
 			'top500': 'Top 500 Words',
@@ -433,38 +431,41 @@ const UI = {
 		};
 		const languageName = `Word Practice (${setNames[selectedSet] || 'Top 500 Words'})`;
 
-		// 統計を保存（typing.jsで計算された正しい値を使用）
 		Stats.saveResult(
 			languageName,
-			1, // Word Practiceは常にパート1
-			1, // Word Practiceは常に1パート
-			stats.averageWPM, // 正しく計算されたWPM
-			stats.accuracy, // 正しく計算されたAccuracy
-			stats.totalTime, // 正しく計算された時間
-			stats.wordCount // 単語数
+			1,
+			1,
+			stats.averageWPM,
+			stats.accuracy,
+			stats.totalTime,
+			stats.wordCount
 		);
 
-		// Word Practiceリザルトセクションを表示
-		if (DOM.wordPracticeResults) {
-			DOM.wordPracticeResults.style.display = "block";
+		this._showSpecializedOverlay(DOM.wordPracticeResults);
+	},
+
+	// 専用オーバーレイ表示の共通処理
+	_showSpecializedOverlay(resultContainer) {
+		if (resultContainer) {
+			resultContainer.style.display = "block";
 		}
 
-		// 通常の統計セクションを非表示
 		const statsListEls = document.querySelectorAll(".stats-list:not(.typewell-stats)");
 		statsListEls.forEach(el => {
 			el.style.display = "none";
 		});
 
-		// TOP3ランキング表示を無効化（Word Practiceは独自表示を使用）
 		const top3RankingEl = document.getElementById("top3-ranking");
 		if (top3RankingEl) {
 			top3RankingEl.style.display = "none";
 		}
 
-		// ボタンテキストの更新
 		this.updateOverlayButtons();
+		this._fadeInOverlay();
+	},
 
-		// フェードイン効果でオーバーレイを表示
+	// オーバーレイフェードイン
+	_fadeInOverlay() {
 		if (DOM.overlay) {
 			DOM.overlay.style.visibility = "visible";
 			DOM.overlay.classList.remove("hide");
@@ -474,89 +475,7 @@ const UI = {
 		}
 	},
 
-	// Word Practice結果表示（統計から呼ばれる）
-	showWordPracticeResults(stats) {
-		// 基本情報の表示
-		const pageBadgeEl = document.getElementById("page-badge");
-		const characterCountEl = document.getElementById("character-count");
-		
-		if (pageBadgeEl) {
-			pageBadgeEl.textContent = "Word Practice";
-		}
-		if (characterCountEl) {
-			characterCountEl.textContent = `${stats.wordCount} words`;
-		}
 
-		// Word Practice統計サマリーの表示
-		if (DOM.wordPracticeSummary) {
-			DOM.wordPracticeSummary.innerHTML = `
-				<div class="word-practice-summary-grid">
-					<div class="summary-stat">
-						<span class="summary-label">Average WPM:</span>
-						<span class="summary-value">${stats.averageWPM}</span>
-					</div>
-					<div class="summary-stat">
-						<span class="summary-label">Accuracy:</span>
-						<span class="summary-value">${stats.accuracy}%</span>
-					</div>
-					<div class="summary-stat">
-						<span class="summary-label">Total Time:</span>
-						<span class="summary-value">${stats.totalTime.toFixed(1)}s</span>
-					</div>
-					<div class="summary-stat">
-						<span class="summary-label">Avg First Key:</span>
-						<span class="summary-value">${stats.averageFirstKeyTime}ms</span>
-					</div>
-					<div class="summary-stat">
-						<span class="summary-label">Avg Word Time:</span>
-						<span class="summary-value">${stats.averageWordTime}ms</span>
-					</div>
-					<div class="summary-stat">
-						<span class="summary-label">Word Count:</span>
-						<span class="summary-value">${stats.wordCount}</span>
-					</div>
-				</div>
-			`;
-		}
-
-		// Word Practice詳細結果の生成
-		this.generateWordPracticeDetailedResults();
-	},
-
-	// Word Practice詳細結果生成
-	generateWordPracticeDetailedResults() {
-		if (!DOM.wordPracticeDetailedResults) return;
-
-		const results = APP_STATE.wordPracticeResults;
-		if (!results || results.length === 0) return;
-
-		const correctResults = results.filter(r => r.correct);
-		const bestWPM = correctResults.length > 0 ? Math.max(...correctResults.map(r => r.wordWPM)) : 0;
-		const worstWPM = correctResults.length > 0 ? Math.min(...correctResults.map(r => r.wordWPM)) : 0;
-
-		let html = '<div class="word-practice-words-list">';
-
-		results.forEach((result, index) => {
-			const isBest = result.correct && result.wordWPM === bestWPM;
-			const isWorst = result.correct && result.wordWPM === worstWPM && correctResults.length > 1;
-			const badge = isBest ? " ✓ (Best)" : (isWorst ? " (Slowest)" : "");
-			const status = result.correct ? "correct" : "incorrect";
-			const wpmDisplay = result.correct ? `${result.wordWPM} WPM${badge}` : "Miss";
-
-			html += `
-				<div class="word-result ${status}">
-					<span class="word-number">${index + 1}:</span>
-					<span class="word-text">${result.word}</span>
-					<span class="word-arrow">→</span>
-					<span class="word-wpm">${wpmDisplay}</span>
-					<span class="word-time">${result.wordTime}ms</span>
-				</div>
-			`;
-		});
-
-		html += "</div>";
-		DOM.wordPracticeDetailedResults.innerHTML = html;
-	},
 
 	// オーバーレイボタンテキストの更新
 	updateOverlayButtons() {

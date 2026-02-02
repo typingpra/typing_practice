@@ -309,8 +309,7 @@ const CustomCode = {
 			try {
 				const content = e.target.result;
 
-				// 2バイト文字の簡易チェック
-				const hasNonASCII = /[^\x00-\x7F]/.test(content);
+				const hasNonASCII = content.split('').some(char => char.charCodeAt(0) > 127);
 				if (hasNonASCII) {
 					const proceed = confirm(
 						"This file contains non-ASCII characters (such as Japanese, Chinese, etc.) which may not display correctly.\n\n" +

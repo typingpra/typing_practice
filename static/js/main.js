@@ -277,208 +277,182 @@ function setupEventListeners() {
 		}
 	});
 
-	// キーボード入力
-	document.body.addEventListener("keydown", (e) => {
-		// 入力フィールドにフォーカスがある場合は何もしない
-		if (
-			document.activeElement === DOM.customCodeArea ||
-			document.activeElement === DOM.customNameInput ||
-			document.activeElement === DOM.breakCharsInput ||
-			document.activeElement === DOM.typewellCountdownInput
-		)
-			return;
+	document.body.addEventListener("keydown", handleKeydown);
+}
 
-		// モーダルパネルが開いている場合はタイピング関連の処理を無効化
-		if (
-			DOM.settingsPanel.style.display === "flex" ||
-			DOM.statsPanel.style.display === "flex" ||
-			DOM.helpPanel.style.display === "flex" ||
-			DOM.deleteConfirmationDialog.style.display === "flex"
-		) {
-			// モーダル内で使用されるキーのみ許可（Escapeキーでモーダルを閉じるなど）
-			if (e.key === "Escape") {
-				e.preventDefault();
-				// 開いているモーダルを閉じる
-				if (DOM.settingsPanel.style.display === "flex") {
-					Theme.closeSettings();
-				} else if (DOM.statsPanel.style.display === "flex") {
-					Stats.close();
-				} else if (DOM.helpPanel.style.display === "flex") {
-					UI.closeHelp();
-				} else if (DOM.deleteConfirmationDialog.style.display === "flex") {
-					UI.closeDeleteConfirmation();
-				}
-			}
-			return; // その他のキー入力はブロック
-		}
+function handleKeydown(e) {
+	if (isInputFieldFocused()) return;
+	if (handleModalKey(e)) return;
+	if (handleSpecialKeys(e)) return;
+	if (handlePracticeModes(e)) return;
+	if (handleNormalTyping(e)) return;
+}
 
-		// Escキー: 完全リセット
-		if (e.key === "Escape") {
+function isInputFieldFocused() {
+	const active = document.activeElement;
+	return active === DOM.customCodeArea ||
+		active === DOM.customNameInput ||
+		active === DOM.breakCharsInput ||
+		active === DOM.typewellCountdownInput;
+}
+
+function handleModalKey(e) {
+	const isModalOpen = DOM.settingsPanel.style.display === "flex" ||
+		DOM.statsPanel.style.display === "flex" ||
+		DOM.helpPanel.style.display === "flex" ||
+		DOM.deleteConfirmationDialog.style.display === "flex";
+	
+	if (!isModalOpen) return false;
+
+	if (e.key === "Escape") {
+		e.preventDefault();
+		closeTopModal();
+	}
+	return true;
+}
+
+function closeTopModal() {
+	if (DOM.settingsPanel.style.display === "flex") {
+		Theme.closeSettings();
+	} else if (DOM.statsPanel.style.display === "flex") {
+		Stats.close();
+	} else if (DOM.helpPanel.style.display === "flex") {
+		UI.closeHelp();
+	} else if (DOM.deleteConfirmationDialog.style.display === "flex") {
+		UI.closeDeleteConfirmation();
+	}
+}
+
+function handleSpecialKeys(e) {
+	if (e.key === "Escape") {
+		e.preventDefault();
+		clearWordPracticeIfActive();
+		Typing.restartAll();
+		return true;
+	}
+
+	if (e.key === "Enter" && DOM.overlay?.classList.contains("show")) {
+		e.preventDefault();
+		Typing.nextPage();
+		return true;
+	}
+
+	if (e.key === "r" && DOM.overlay?.classList.contains("show")) {
+		e.preventDefault();
+		Typing.retry();
+		return true;
+	}
+
+	if (e.key === "R" && DOM.overlay?.classList.contains("show")) {
+		e.preventDefault();
+		Typing.restartAll();
+		return true;
+	}
+
+	if (APP_STATE.isBreakActive && e.key === "Enter") {
+		e.preventDefault();
+		Typing.hideBreakDialog();
+		return true;
+	}
+
+	if (DOM.overlay?.classList.contains("show")) return true;
+	return false;
+}
+
+function clearWordPracticeIfActive() {
+	if (DOM.langSel.value === "word-practice" && APP_STATE.wordPracticeState === "practicing") {
+		APP_STATE.wordPracticeState = "waiting";
+		if (DOM.wordPracticeWord) DOM.wordPracticeWord.textContent = "";
+		if (DOM.wordPracticeProgress) DOM.wordPracticeProgress.textContent = "";
+		APP_STATE.inputBuffer = "";
+	}
+}
+
+function handlePracticeModes(e) {
+	if (Typing.isInitialSpeedMode()) {
+		return handleInitialSpeedInput(e);
+	}
+
+	const isTypeWell = DOM.langSel.value === "typewell" || DOM.langSel.value === "typewell-english-words";
+	if (isTypeWell && (APP_STATE.typewellState === "waiting" || APP_STATE.typewellState === "countdown")) {
+		return handleTypeWellStartInput(e);
+	}
+
+	if (DOM.langSel.value === "word-practice") {
+		return handleWordPracticeInput(e);
+	}
+
+	return false;
+}
+
+function handleInitialSpeedInput(e) {
+	if (APP_STATE.initialSpeedState === "waiting" && (e.key === "Enter" || e.key === " ")) {
+		e.preventDefault();
+		if (e.key === " ") DOM.langSel.blur();
+		Typing.startInitialSpeedPractice();
+		return true;
+	}
+	
+	if (APP_STATE.initialSpeedState === "ready") {
+		Typing.handleInitialSpeedInput(e.key);
+		return true;
+	}
+	
+	return APP_STATE.initialSpeedState !== "typing";
+}
+
+function handleTypeWellStartInput(e) {
+	if (APP_STATE.typewellState === "countdown") return true;
+	
+	if (e.key === "Enter" || e.key === " ") {
+		e.preventDefault();
+		if (e.key === " ") DOM.langSel.blur();
+		Typing.startTypeWellCountdown();
+		return true;
+	}
+	
+	return false;
+}
+
+function handleWordPracticeInput(e) {
+	if (APP_STATE.wordPracticeState === "waiting") {
+		if (e.key === "Enter" || e.key === " ") {
 			e.preventDefault();
-			// Word Practice練習中の場合は画面をクリア
-			if (
-				DOM.langSel.value === "word-practice" &&
-				APP_STATE.wordPracticeState === "practicing"
-			) {
-				APP_STATE.wordPracticeState = "waiting";
-				// 単語表示をクリア
-				if (DOM.wordPracticeWord) {
-					DOM.wordPracticeWord.textContent = "";
-				}
-				// 進捗表示をクリア
-				if (DOM.wordPracticeProgress) {
-					DOM.wordPracticeProgress.textContent = "";
-				}
-				// inputBufferをクリア
-				APP_STATE.inputBuffer = "";
-			}
-			Typing.restartAll();
-			return;
+			if (e.key === " ") DOM.langSel.blur();
+			Typing.startWordPracticeFromClick();
+			return true;
 		}
-
-		// Enterキー: リザルト画面が表示されている場合はNext/Finishとして動作
-		if (
-			e.key === "Enter" &&
-			DOM.overlay &&
-			DOM.overlay.classList.contains("show")
-		) {
+		return true;
+	}
+	
+	if (APP_STATE.wordPracticeState === "practicing") {
+		if (e.key.length === 1 || e.key === " ") {
 			e.preventDefault();
-			Typing.nextPage();
-			return;
+			Typing.handleWordPracticeInput(e.key);
 		}
+		return true;
+	}
+	
+	return false;
+}
 
-		// rキー: リザルト画面が表示されている場合はRetryとして動作
-		if (
-			e.key === "r" &&
-			DOM.overlay &&
-			DOM.overlay.classList.contains("show")
-		) {
-			e.preventDefault();
-			Typing.retry();
-			return;
-		}
+function handleNormalTyping(e) {
+	if (e.key === " " && !APP_STATE.startTime) {
+		DOM.langSel.blur();
+	}
 
-		// Rキー: リザルト画面が表示されている場合はRestart Allとして動作
-		if (
-			e.key === "R" &&
-			DOM.overlay &&
-			DOM.overlay.classList.contains("show")
-		) {
-			e.preventDefault();
-			Typing.restartAll();
-			return;
-		}
+	const isTypeWell = DOM.langSel.value === "typewell" || DOM.langSel.value === "typewell-english-words";
+	if (!APP_STATE.startTime && !Typing.isInitialSpeedMode() && (!isTypeWell || APP_STATE.typewellState === "typing")) {
+		Typing.startTimer();
+	}
 
-		// 休憩中のEnterキーで休憩解除
-		if (APP_STATE.isBreakActive && e.key === "Enter") {
-			e.preventDefault();
-			Typing.hideBreakDialog();
-			return;
-		}
-
-		// オーバーレイが表示されている場合は何もしない（Enterキー以外）
-		if (DOM.overlay && DOM.overlay.classList.contains("show")) return;
-
-		// 休憩中の場合は何もしない
-		if (APP_STATE.isBreakActive) return;
-
-		// Initial Speedモードの特別処理
-		if (Typing.isInitialSpeedMode()) {
-			// 待機中またはready状態の場合はTyping.handleKeyPressに委譲
-			if (
-				APP_STATE.initialSpeedState === "waiting" ||
-				APP_STATE.initialSpeedState === "ready"
-			) {
-				if (e.key === "Enter" || e.key === " " || e.key.length === 1) {
-					e.preventDefault();
-					// スペースでゲーム開始時に言語選択からフォーカスを外す
-					if (e.key === " " && APP_STATE.initialSpeedState === "waiting") {
-						DOM.langSel.blur();
-					}
-					Typing.handleKeyPress(e.key);
-				}
-				return;
-			}
-			// その他の状態では入力を無視
-			return;
-		}
-
-		// タイプウェルオリジナルモードまたはTypeWell English Wordsモードの特別処理
-		if (
-			DOM.langSel.value === "typewell" ||
-			DOM.langSel.value === "typewell-english-words"
-		) {
-			// 待機中またはカウントダウン中の場合はTyping.handleKeyPressに委譲
-			if (
-				APP_STATE.typewellState === "waiting" ||
-				APP_STATE.typewellState === "countdown"
-			) {
-				if (e.key === "Enter" || e.key === " " || e.key.length === 1) {
-					// スペースキー対応を追加
-					e.preventDefault();
-					// スペースでゲーム開始時に言語選択からフォーカスを外す
-					if (e.key === " " && APP_STATE.typewellState === "waiting") {
-						DOM.langSel.blur();
-					}
-					Typing.handleKeyPress(e.key);
-				}
-				return;
-			}
-			// タイピング中の場合は通常処理を続行
-		}
-
-		// Word Practiceモードの特別処理
-		if (DOM.langSel.value === "word-practice") {
-			// 待機中の場合はスタート処理
-			if (APP_STATE.wordPracticeState === "waiting") {
-				if (e.key === "Enter" || e.key === " ") {
-					e.preventDefault();
-					// スペースでゲーム開始時に言語選択からフォーカスを外す
-					if (e.key === " ") {
-						DOM.langSel.blur();
-					}
-					Typing.startWordPracticeFromClick();
-				}
-				return;
-			}
-			// 練習中の場合はWord Practice専用処理（TypeWellモード同様、バックスペース無効）
-			if (APP_STATE.wordPracticeState === "practicing") {
-				if (e.key.length === 1 || e.key === " ") {
-					e.preventDefault();
-					Typing.handleWordPracticeInput(e.key);
-				}
-				// バックスペースは無効化（TypeWellモード同様）
-				return;
-			}
-			// その他の状態では入力を無視
-			return;
-		}
-
-		// 通常のプログラミング言語モードでスペースキーを押した場合の処理を追加
-		// タイマーが開始されていない場合でスペースキーが押された場合、言語選択からフォーカスを外す
-		if (e.key === " " && !APP_STATE.startTime) {
-			DOM.langSel.blur();
-		}
-
-		// タイマーが開始されていない場合は開始（Initial Speedまたはタイプウェルのタイピング状態の場合のみ）
-		if (
-			!APP_STATE.startTime &&
-			!Typing.isInitialSpeedMode() &&
-			((DOM.langSel.value !== "typewell" &&
-				DOM.langSel.value !== "typewell-english-words") ||
-				APP_STATE.typewellState === "typing")
-		) {
-			Typing.startTimer();
-		}
-
-		if (e.key.length === 1 || e.key === "Enter") {
-			e.preventDefault();
-			Typing.handleKeyPress(e.key);
-		} else if (e.key === "Backspace") {
-			e.preventDefault();
-			Typing.handleBackspace();
-		}
-	});
+	if (e.key.length === 1 || e.key === "Enter") {
+		e.preventDefault();
+		Typing.handleKeyPress(e.key);
+	} else if (e.key === "Backspace") {
+		e.preventDefault();
+		Typing.handleBackspace();
+	}
 }
 
 // ラジオボタンの初期状態を設定

@@ -172,227 +172,164 @@ const Utils = {
 		return result;
 	},
 
-	// English Words用コード生成（8行×50文字）
 	generateEnglishWordsCode() {
 		const CHARS_PER_LINE = 50;
 		const TOTAL_LINES = 8;
 		
-		// 選択された単語セットを取得
 		const selectedSet = this.getSelectedTypeWellEnglishWordsSet();
 		
-		// words.jsからWORD_SETSを使用（実際のNGSLデータ）
 		if (typeof WORD_SETS === 'undefined') {
 			console.error('WORD_SETS not found. Make sure words.js is loaded.');
 			return "Error: Word data not available";
 		}
 
-		// 選択されたセットの単語を取得
 		const words = WORD_SETS[selectedSet]?.words || WORD_SETS.top500?.words || [];
-
-		// ランダム生成器の初期化
 		this._seedXorshift128();
 
-		// Fisher-Yatesシャッフルで単語プールを作成（重複制御）
-		const shuffledWords = [...words]; // コピーを作成
-		for (let i = shuffledWords.length - 1; i > 0; i--) {
+		const wordPool = this._createShuffledWordPool(words);
+		const lines = this._generateWordLines(wordPool, CHARS_PER_LINE, TOTAL_LINES);
+		
+		return lines.join("\n");
+	},
+
+	_createShuffledWordPool(words) {
+		const pool = [...words];
+		for (let i = pool.length - 1; i > 0; i--) {
 			const j = Math.floor(this._xorshift128() * (i + 1));
-			[shuffledWords[i], shuffledWords[j]] = [shuffledWords[j], shuffledWords[i]];
+			[pool[i], pool[j]] = [pool[j], pool[i]];
 		}
-		
-		let wordIndex = 0; // シャッフルされた単語プールのインデックス
-		
-		// 単語選択関数（重複制御付き）
-		const getNextWord = () => {
-			if (wordIndex >= shuffledWords.length) {
-				// プール枯渇時は再シャッフル
-				for (let i = shuffledWords.length - 1; i > 0; i--) {
-					const j = Math.floor(this._xorshift128() * (i + 1));
-					[shuffledWords[i], shuffledWords[j]] = [shuffledWords[j], shuffledWords[i]];
-				}
-				wordIndex = 0;
+		return { words: pool, index: 0 };
+	},
+
+	_getNextWord(pool) {
+		if (pool.index >= pool.words.length) {
+			for (let i = pool.words.length - 1; i > 0; i--) {
+				const j = Math.floor(this._xorshift128() * (i + 1));
+				[pool.words[i], pool.words[j]] = [pool.words[j], pool.words[i]];
 			}
-			return shuffledWords[wordIndex++];
-		};
+			pool.index = 0;
+		}
+		return pool.words[pool.index++];
+	},
 
-		let result = "";
-		let pendingWordRemainder = ""; // 前の行から継続する単語の残り部分
-		let pendingSpaceNeeded = false; // 次の行の最初にスペースが必要かどうか
+	_generateWordLines(pool, charsPerLine, totalLines) {
+		const lines = [];
+		let remainder = "";
+		let needsSpace = false;
 
-		for (let line = 0; line < TOTAL_LINES; line++) {
-			let lineContent = "";
-			let currentLineLength = 0;
-
-			// 前の行からスペースが必要な場合、行の最初にスペースを追加
-			if (pendingSpaceNeeded && currentLineLength < CHARS_PER_LINE) {
-				lineContent += " ";
-				currentLineLength++;
-				pendingSpaceNeeded = false;
-			}
-
-			// 前の行から継続する単語の残り部分がある場合、それから開始
-			if (pendingWordRemainder) {
-				const remainderLength = Math.min(pendingWordRemainder.length, CHARS_PER_LINE - currentLineLength);
-				lineContent += pendingWordRemainder.substring(0, remainderLength);
-				currentLineLength += remainderLength;
-				
-				// 残り部分が行に収まった場合
-				if (pendingWordRemainder.length <= (CHARS_PER_LINE - currentLineLength + remainderLength)) {
-					pendingWordRemainder = "";
-					// 単語完了後はスペースを追加（行に余裕があれば）
-					if (currentLineLength < CHARS_PER_LINE) {
-						lineContent += " ";
-						currentLineLength++;
-					}
-				} else {
-					// 残り部分が行に収まらない場合、次の行に継続
-					pendingWordRemainder = pendingWordRemainder.substring(remainderLength);
-				}
-			}
-
-			// 行に余裕がある間、新しい単語を追加
-			while (currentLineLength < CHARS_PER_LINE && !pendingWordRemainder) {
-				// シャッフルされたプールから単語を選択
-				const word = getNextWord();
-				
-				// 単語 + スペースの長さを計算
-				const wordWithSpace = word + " ";
-				const wordLength = wordWithSpace.length;
-
-				// 最終行（8行目）では50文字で強制終了
-				if (line === TOTAL_LINES - 1) {
-					const remainingChars = CHARS_PER_LINE - currentLineLength;
-					if (remainingChars <= 0) break;
-					
-					if (wordLength <= remainingChars) {
-						// 単語全体が入る場合
-						lineContent += wordWithSpace;
-						currentLineLength += wordLength;
-					} else {
-						// 単語の一部のみ追加して終了
-						lineContent += word.substring(0, remainingChars);
-						currentLineLength = CHARS_PER_LINE;
-					}
-				} else {
-					// 通常の行での処理
-					if (currentLineLength + wordLength <= CHARS_PER_LINE) {
-						// 単語全体が行に入る場合
-						lineContent += wordWithSpace;
-						currentLineLength += wordLength;
-					} else {
-						// 単語が行を超える場合、分割して次の行に継続
-						const remainingChars = CHARS_PER_LINE - currentLineLength;
-						if (remainingChars > 0) {
-							lineContent += word.substring(0, remainingChars);
-							currentLineLength = CHARS_PER_LINE;
-							pendingWordRemainder = word.substring(remainingChars);
-							// 単語分割時は次の行でスペースが必要
-							pendingSpaceNeeded = false; // 単語が継続する場合はスペース不要
-						}
-					}
-				}
-			}
-
-			// 行の内容を正確に50文字にする
-			lineContent = lineContent.substring(0, CHARS_PER_LINE);
+		for (let lineIdx = 0; lineIdx < totalLines; lineIdx++) {
+			const isLastLine = lineIdx === totalLines - 1;
+			const lineResult = this._buildLine(pool, charsPerLine, isLastLine, remainder, needsSpace);
 			
-			// 行末でのスペース必要判定を改善（単語が継続しない場合のみ）
-			if (line < TOTAL_LINES - 1 && !pendingWordRemainder) {
-				// 単語が次の行に継続しない場合のみ、スペース要否を判定
-				const lastChar = lineContent[lineContent.length - 1];
-				if (lastChar && lastChar !== " ") {
-					// 最後の文字がスペース以外（単語）で完了している場合、次行でスペースが必要
-					pendingSpaceNeeded = true;
+			lines.push(lineResult.content);
+			remainder = lineResult.remainder;
+			needsSpace = lineResult.needsSpace;
+		}
+
+		return lines;
+	},
+
+	_buildLine(pool, maxLength, isLastLine, remainder, needsSpace) {
+		let content = "";
+		let length = 0;
+
+		if (needsSpace && length < maxLength) {
+			content += " ";
+			length++;
+		}
+
+		if (remainder) {
+			const fitLength = Math.min(remainder.length, maxLength - length);
+			content += remainder.substring(0, fitLength);
+			length += fitLength;
+			
+			if (fitLength >= remainder.length) {
+				remainder = "";
+				if (length < maxLength) {
+					content += " ";
+					length++;
+				}
+			} else {
+				remainder = remainder.substring(fitLength);
+				return { content: content.substring(0, maxLength), remainder, needsSpace: false };
+			}
+		}
+
+		while (length < maxLength && !remainder) {
+			const word = this._getNextWord(pool);
+			const wordWithSpace = word + " ";
+			
+			if (isLastLine) {
+				const remaining = maxLength - length;
+				if (wordWithSpace.length <= remaining) {
+					content += wordWithSpace;
+					length += wordWithSpace.length;
 				} else {
-					// 最後の文字がスペースの場合、次行でスペースは不要
-					pendingSpaceNeeded = false;
+					content += word.substring(0, remaining);
+					length = maxLength;
+				}
+			} else {
+				if (length + wordWithSpace.length <= maxLength) {
+					content += wordWithSpace;
+					length += wordWithSpace.length;
+				} else {
+					const remaining = maxLength - length;
+					content += word.substring(0, remaining);
+					remainder = word.substring(remaining);
+					length = maxLength;
 				}
 			}
-
-			result += lineContent;
-
-			// 最後の行以外は改行を追加
-			if (line < TOTAL_LINES - 1) {
-				result += "\n";
-			}
 		}
 
-		return result;
+		const lastChar = content[content.length - 1];
+		needsSpace = !isLastLine && !remainder && lastChar && lastChar !== " ";
+
+		return { content: content.substring(0, maxLength), remainder, needsSpace };
 	},
 
-	// 選択されたデフォルト言語モードを取得
 	getSelectedDefaultMode() {
-		// DOMが存在しない場合はデフォルトを返す
-		if (typeof document === "undefined") {
-			return "normal";
-		}
-
-		const normalRadio = document.getElementById("default-normal");
-		const typewellRadio = document.getElementById("default-typewell");
-
-		if (normalRadio && normalRadio.checked) return "normal";
-		if (typewellRadio && typewellRadio.checked) return "typewell";
-
-		// デフォルトは通常モード
-		return "normal";
+		return this._getCheckedRadioValue([
+			["default-normal", "normal"],
+			["default-typewell", "typewell"]
+		], "normal");
 	},
 
-	// 選択されたTypeWellモードを取得
+	_getCheckedRadioValue(radioIds, defaultValue) {
+		if (typeof document === "undefined") {
+			return defaultValue;
+		}
+
+		for (const [id, value] of radioIds) {
+			const radio = document.getElementById(id);
+			if (radio && radio.checked) return value;
+		}
+
+		return defaultValue;
+	},
+
 	getSelectedTypeWellMode() {
-		// DOMが存在しない場合はデフォルトを返す
-		if (typeof document === "undefined") {
-			return "lowercase";
-		}
-
-		const lowercaseRadio = document.getElementById("typewell-lowercase");
-		const mixedRadio = document.getElementById("typewell-mixed");
-		const symbolsRadio = document.getElementById("typewell-symbols");
-		const numbersRadio = document.getElementById("typewell-numbers");
-
-		if (lowercaseRadio && lowercaseRadio.checked) return "lowercase";
-		if (mixedRadio && mixedRadio.checked) return "mixed";
-		if (symbolsRadio && symbolsRadio.checked) return "symbols";
-		if (numbersRadio && numbersRadio.checked) return "numbers";
-
-		// デフォルトは小文字のみ
-		return "lowercase";
+		return this._getCheckedRadioValue([
+			["typewell-lowercase", "lowercase"],
+			["typewell-mixed", "mixed"],
+			["typewell-symbols", "symbols"],
+			["typewell-numbers", "numbers"]
+		], "lowercase");
 	},
 
-	// 選択されたTypeWell English Words単語セットを取得
 	getSelectedTypeWellEnglishWordsSet() {
-		// DOMが存在しない場合はデフォルトを返す
-		if (typeof document === "undefined") {
-			return "top500";
-		}
-
-		const top500Radio = document.getElementById("typewell-english-words-top500");
-		const top1500Radio = document.getElementById("typewell-english-words-top1500");
-		const allRadio = document.getElementById("typewell-english-words-all");
-
-		if (top500Radio && top500Radio.checked) return "top500";
-		if (top1500Radio && top1500Radio.checked) return "top1500";
-		if (allRadio && allRadio.checked) return "all";
-
-		// デフォルトはTOP500
-		return "top500";
+		return this._getCheckedRadioValue([
+			["typewell-english-words-top500", "top500"],
+			["typewell-english-words-top1500", "top1500"],
+			["typewell-english-words-all", "all"]
+		], "top500");
 	},
 
-	// 選択されたWord Practice単語セットを取得
 	getSelectedWordPracticeSet() {
-		// DOMが存在しない場合はデフォルトを返す
-		if (typeof document === "undefined") {
-			return "top500";
-		}
-
-		const top500Radio = document.getElementById("word-practice-top500");
-		const top1500Radio = document.getElementById("word-practice-top1500");
-		const allRadio = document.getElementById("word-practice-all");
-
-		if (top500Radio && top500Radio.checked) return "top500";
-		if (top1500Radio && top1500Radio.checked) return "top1500";
-		if (allRadio && allRadio.checked) return "all";
-
-		// デフォルトはTOP500
-		return "top500";
+		return this._getCheckedRadioValue([
+			["word-practice-top500", "top500"],
+			["word-practice-top1500", "top1500"],
+			["word-practice-all", "all"]
+		], "top500");
 	},
 
 	// Initial Speed用のランダム文字生成
@@ -408,32 +345,15 @@ const Utils = {
 		return characterSet[randomIndex];
 	},
 
-	// 選択されたInitial Speedモードを取得
 	getSelectedInitialSpeedMode() {
-		// DOMが存在しない場合はデフォルトを返す
-		if (typeof document === "undefined") {
-			return CONSTANTS.INITIAL_SPEED_SETTINGS.MODES.LOWERCASE;
-		}
-
-		const lowercaseRadio = document.getElementById("initial-speed-lowercase");
-		const numbersRadio = document.getElementById("initial-speed-numbers");
-		const leftHandRadio = document.getElementById("initial-speed-lefthand");
-		const rightHandRadio = document.getElementById("initial-speed-righthand");
-		const handPrimitiveRadio = document.getElementById("initial-speed-hand-primitive");
-
-		if (lowercaseRadio && lowercaseRadio.checked)
-			return CONSTANTS.INITIAL_SPEED_SETTINGS.MODES.LOWERCASE;
-		if (numbersRadio && numbersRadio.checked)
-			return CONSTANTS.INITIAL_SPEED_SETTINGS.MODES.NUMBERS;
-		if (leftHandRadio && leftHandRadio.checked)
-			return CONSTANTS.INITIAL_SPEED_SETTINGS.MODES.LEFT_HAND;
-		if (rightHandRadio && rightHandRadio.checked)
-			return CONSTANTS.INITIAL_SPEED_SETTINGS.MODES.RIGHT_HAND;
-		if (handPrimitiveRadio && handPrimitiveRadio.checked)
-			return CONSTANTS.INITIAL_SPEED_SETTINGS.MODES.HAND_PRIMITIVE;
-
-		// デフォルトは小文字+記号
-		return CONSTANTS.INITIAL_SPEED_SETTINGS.MODES.LOWERCASE;
+		const modes = CONSTANTS.INITIAL_SPEED_SETTINGS.MODES;
+		return this._getCheckedRadioValue([
+			["initial-speed-lowercase", modes.LOWERCASE],
+			["initial-speed-numbers", modes.NUMBERS],
+			["initial-speed-lefthand", modes.LEFT_HAND],
+			["initial-speed-righthand", modes.RIGHT_HAND],
+			["initial-speed-hand-primitive", modes.HAND_PRIMITIVE]
+		], modes.LOWERCASE);
 	},
 
 	// Initial Speedモード名を表示用文字列に変換

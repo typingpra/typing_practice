@@ -4,13 +4,26 @@
 
 🎯 **A comprehensive typing practice application for programmers and language learners**
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Platform: Web](https://img.shields.io/badge/Platform-Web-blue.svg)](https://typingpra.github.io)
+[![Tech: Vanilla JS](https://img.shields.io/badge/Tech-Vanilla%20JS-green.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+
 [Features](#features) • [Quick Start](#quick-start) • [Practice Modes](#practice-modes) • [Documentation](#documentation)
 
 </div>
 
 ## 🌟 Overview
 
-A specialized typing practice application combining programming code practice, English vocabulary training, basic character practice, and reaction time measurement. Built as a static web application with advanced analytics and hosted on GitHub Pages.
+A specialized typing practice application combining programming code practice, English vocabulary training, basic character practice, and reaction time measurement. Built as a **pure static web application** with advanced analytics and hosted on GitHub Pages.
+
+**Key Highlights:**
+- 🚀 **Zero setup required** - Works directly in your browser
+- 📱 **Fully responsive** - Practice on desktop, tablet, or mobile
+- 🔒 **Privacy-first** - All data stays locally in your browser
+- 📊 **Rich analytics** - Track your progress with interactive charts
+- 🎨 **Beautiful themes** - Dark and light modes for comfortable practice
+
+---
 
 ## ✨ Features
 
@@ -23,130 +36,190 @@ A specialized typing practice application combining programming code practice, E
 - **Page-based Learning**: Long code automatically split into manageable 20-line pages
 - **Multiple Practice Modes**: Normal (with corrections) and TypeWell (strict, no backspace)
 
-### 🎯 Practice Modes
+---
 
-#### 💻 Programming Languages (7 languages)
+## 🎮 Practice Modes
 
-- **Languages**: Python, JavaScript, Java, C, C++, Rust, Lua
-- **Real Code Practice**: Actual programming syntax and patterns
-- **Page Division**: Automatic 20-line page splitting for long files
-- **Mode Selection**: Normal (backspace allowed) or TypeWell (strict) per language
+### 💻 Programming Languages (7 languages)
 
-#### ⌨️ TypeWell Original
+Practice with real code snippets from popular programming languages:
 
-- **Random Character Practice**: 360 characters × 10 lines (36 chars/line)
-- **4 Difficulty Modes**:
-  - Lowercase (a-z + space, comma, period)
-  - Mixed Case (a-z, A-Z + space, comma, period)
-  - With Symbols (a-z, A-Z + all symbols + space)
-  - Numbers Only (0-9 focused practice)
-- **Advanced Features**:
-  - Backspace completely disabled - stop on mistakes
-  - High-quality Xorshift128 random generation
-  - Configurable countdown (0-3 seconds)
-  - Dedicated 28px large font for optimal visibility
-  - Line-by-line lap time recording
+| Language | Description | Difficulty |
+|----------|-------------|------------|
+| **Python** | Clean, readable syntax | Beginner-friendly |
+| **JavaScript** | Web development essentials | Intermediate |
+| **Java** | Enterprise-grade code | Intermediate |
+| **C** | Low-level programming | Advanced |
+| **C++** | Object-oriented systems | Advanced |
+| **Rust** | Modern systems language | Advanced |
+| **Lua** | Lightweight scripting | Beginner-friendly |
 
-#### 🔤 TypeWell English Words
+**Features:**
+- Real code practice with actual programming syntax and patterns
+- Automatic 20-line page splitting for long files
+- Choose Normal mode (backspace allowed) or TypeWell mode (strict)
+- Syntax-aware character highlighting
 
-- **NGSL-compliant Vocabulary**: New General Service List English words
-- **3 Word Sets**:
-  - Top 500 Words (most frequent)
-  - Top 1500 Words (extended vocabulary)
-  - All Words (complete 2809 words)
-- **Fixed Format**: 400 characters × 8 lines consistently
-- **TypeWell Style**: Strict mode with backspace disabled
-- **Educational Value**: Learn common English vocabulary while practicing
+### ⌨️ TypeWell Original
 
-#### ⚡ Initial Speed
+Master fundamental typing skills with random character drills:
 
-- **Reaction Time Measurement**: Single character response speed training
-- **2 Character Sets**:
-  - Lowercase + Punctuation (a-z + ,.)
-  - Numbers Only (0-9)
-- **Configurable Trials**: 5-20 attempts per session
-- **Precision Timing**: Millisecond-accurate measurement
-- **Anti-cheat System**: Detection and penalty for premature key presses
-- **Detailed Analysis**: Trial-by-trial breakdown with fastest/slowest times
+**Format:** 360 characters × 10 lines (36 characters per line)
 
-#### 📚 Word Practice
+**4 Difficulty Modes:**
+- 📝 **Lowercase** - a-z + space, comma, period
+- 📝 **Mixed Case** - a-z, A-Z + space, comma, period  
+- 📝 **With Symbols** - Full alphanumeric + all symbols
+- 🔢 **Numbers Only** - 0-9 focused practice
 
-- **Individual Word Training**: English word-by-word typing practice
-- **NGSL Word Database**: Scientifically validated vocabulary (CC BY-SA 4.0 licensed)
-- **Flexible Length**: 5-20 words per session
-- **Real-time WPM**: Immediate speed calculation per word completed
-- **Comprehensive Results**: Word-by-word performance with best/worst tracking
-- **First Key Analysis**: Reaction time measurement for word recognition
+**Special Features:**
+- ⛔ **No Backspace** - Stop on mistakes for strict training
+- 🎲 **Xorshift128 Random** - High-quality random generation
+- ⏱️ **Countdown Timer** - Configurable 0-3 second preparation
+- 🔤 **Large Font** - 28px dedicated font for optimal visibility
+- 📊 **Lap Times** - Line-by-line completion tracking
 
-#### 🔧 Custom Code
+### 🔤 TypeWell English Words
 
-- **File Support**: .txt, .js, .py, .c, .cpp, .java, .rs, .lua, .md, .json, .html, .css
-- **Large File Support**: Up to 1MB file size limit
-- **Mode Selection**: Choose Normal or TypeWell mode when saving
-- **Save & Load System**: Named storage for multiple custom codes
-- **Paste Support**: Direct text pasting alternative to file upload
+Improve typing speed while learning practical English vocabulary:
 
-### 📊 Advanced Analytics
+**Format:** 400 characters × 8 lines consistently
 
-#### 📈 Interactive Graphs (Chart.js powered)
+**3 Word Sets (NGSL-compliant):**
+- 📚 **Top 500 Words** - Most frequent everyday vocabulary
+- 📚 **Top 1500 Words** - Extended vocabulary coverage
+- 📚 **All Words** - Complete 2809 word database
 
-- **Progress Chart**: Performance trends over time (Line chart)
-- **Language Comparison**: Side-by-side language performance (Bar chart)
-- **Initial Speed Analysis**: Reaction time scatter plot with trend analysis
-- **Keyboard Analysis**: Heatmap + mistake frequency visualization
+**Educational Value:**
+- Based on the **New General Service List** - scientifically validated frequency data
+- Learn common English words while practicing typing
+- Strict TypeWell mode for accuracy training
+- Perfect for ESL learners and vocabulary building
 
-#### 🎯 Mistake Analysis System
+### ⚡ Initial Speed
 
-- **Character-level Tracking**: Comprehensive recording of all typing errors
-- **Dual Statistics**: General mistakes + Initial Speed specific mistakes
-- **Keyboard Heatmap**: 15×4 QWERTY layout with 5-level intensity visualization
-- **Top 8 Problem Characters**: Doughnut chart with gradient colors
-- **Special Character Support**: Proper display of space (␣), Enter (⏎), Tab (→)
+Train your reaction time and finger reflexes:
 
-#### 🏆 TOP3 Ranking System
+**Character Sets:**
+- 🔤 **Lowercase + Punctuation** (a-z, comma, period)
+- 🔢 **Numbers Only** (0-9)
+- ✋ **Left Hand** (qwertasdfgzxcvb)
+- ✋ **Right Hand** (yuiophjklnm,.)
+- 🎯 **Hand Primitive** - Specialized left/right reflex training
 
-- **Language-specific Records**: Separate rankings for each practice mode
-- **Part-based Tracking**: Individual page/section record management
-- **Rank-in Detection**: Highlight display when achieving new personal bests
-- **Automatic Updates**: Real-time record comparison and updating
+**Features:**
+- ⚡ **Millisecond precision** - Accurate reaction time measurement
+- 🎯 **5-20 trials** - Configurable session length
+- 🛡️ **Anti-cheat** - Premature key press detection
+- 📊 **Detailed analysis** - Trial-by-trial breakdown with statistics
+- 🏆 **TOP3 Rankings** - Based on average reaction time
 
-### 🎨 Customization & Comfort
+### 📚 Word Practice
 
-#### 🌙 Advanced Theme System
+Individual word-by-word typing practice:
 
-- **Dark/Light Themes**: Eye-friendly themes for any environment with smooth transitions
-- **CSS Custom Properties**: Dynamic color management with theme-aware graphs
-- **Responsive Design**: Automatic mobile layout adjustments
-- **Color Coding System**: Distinct colors for correct, incorrect, pending, and current position
+**Features:**
+- 📖 **NGSL Word Database** - 2809 scientifically validated words
+- 🔢 **5-20 words per session** - Flexible practice length
+- ⏱️ **Real-time WPM** - Immediate speed feedback per word
+- 📈 **Comprehensive results** - Best/worst word tracking
+- 🎯 **First key analysis** - Measure word recognition time
 
-#### 🧘 Auto Break System
+### 🔧 Custom Code
 
-- **Configurable Thresholds**: Set character count for automatic break reminders
-- **Smart Detection**: Monitors cumulative typing across sessions
-- **Break Statistics**: Display current WPM, time, and character count during breaks
-- **Resume Controls**: Continue button or Enter key to resume practice
+Practice with your own content:
 
-#### 🌏 Multilingual Support
+**Supported Formats:**
+`.txt` `.js` `.py` `.c` `.cpp` `.java` `.rs` `.lua` `.md` `.json` `.html` `.css` and more
 
-- **Multibyte Character Skip**: Automatic skip of Japanese, Chinese, Korean characters
-- **ASCII Optimization**: Programming-focused character practice
-- **Visual Distinction**: Dim display of non-target multibyte characters
-- **International File Support**: Safe handling of multilingual code files
+**Features:**
+- 📁 **File upload** - Up to 1MB file size
+- 📋 **Paste support** - Direct text input alternative
+- 💾 **Save & Load** - Named storage for multiple codes
+- 🎨 **Mode selection** - Normal or TypeWell mode per code
+- 📄 **Auto-paging** - Long files split into 20-line pages
+
+---
+
+## 📊 Advanced Analytics
+
+### 📈 Interactive Graphs
+
+Powered by **Chart.js** for beautiful, interactive visualizations:
+
+- **📊 Progress Chart** - Performance trends over time (Line chart)
+- **📈 Language Comparison** - Side-by-side language performance (Bar chart)
+- **⚡ Initial Speed Analysis** - Reaction time scatter plot with trend lines
+- **⌨️ Keyboard Analysis** - Heatmap + mistake frequency visualization
+
+### 🎯 Mistake Analysis System
+
+Identify and improve your weak points:
+
+- **Character-level tracking** - Every error recorded and analyzed
+- **Dual statistics** - General mistakes + Initial Speed specific data
+- **Keyboard heatmap** - 15×4 QWERTY layout with 5-level intensity
+- **Top 8 problem characters** - Doughnut chart with gradient colors
+- **Special character support** - Visual display for space (␣), Enter (⏎), Tab (→)
+
+### 🏆 TOP3 Ranking System
+
+Track your personal bests:
+
+- **Language-specific records** - Separate rankings per practice mode
+- **Part-based tracking** - Individual page/section records
+- **Rank-in celebration** - Highlight when achieving new personal bests
+- **Real-time updates** - Automatic record comparison
+
+---
+
+## 🎨 Customization & Comfort
+
+### 🌙 Advanced Theme System
+
+- **Dark/Light themes** - Eye-friendly for any environment
+- **Smooth transitions** - Animated theme switching
+- **Responsive design** - Mobile-optimized layouts
+- **Color coding** - Clear visual feedback:
+  - 🟢 **Green** = Correct
+  - 🔴 **Red** = Incorrect
+  - ⚪ **Gray** = Pending
+  - 🔵 **Blue background** = Current position
+
+### 🧘 Auto Break System
+
+Prevent fatigue with smart break reminders:
+
+- **Configurable thresholds** - Set character count for automatic breaks
+- **Cross-session tracking** - Monitors cumulative typing
+- **Break statistics** - Display current WPM, time, and character count
+- **Easy resume** - Continue button or Enter key
+
+### 🌏 Multilingual Support
+
+- **Multibyte character skip** - Japanese, Chinese, Korean characters handled gracefully
+- **ASCII optimization** - Programming-focused practice
+- **Visual distinction** - Non-target characters shown dimmed
+- **UTF-8 support** - Safe handling of international files
 
 ### 💾 Data Management
 
-- **Local Storage**: All data saved securely in browser localStorage
-- **Export/Import**: Complete backup and restore functionality with JSON format
-- **Cross-Session Persistence**: Settings and statistics preserved between visits
-- **365-Day Retention**: Standard browser storage retention period
-- **Privacy First**: No external data transmission, completely offline-capable
+- **Local storage** - All data saved securely in browser
+- **Export/Import** - JSON format backup and restore
+- **Cross-session persistence** - Settings preserved between visits
+- **365-day retention** - Standard browser storage period
+- **Privacy first** - No external data transmission, completely offline
+
+---
 
 ## 🚀 Quick Start
 
 ### Option 1: Fork & Deploy (Recommended)
 
+Perfect for customizing your own instance:
+
 1. **Fork this repository** to your GitHub account
-2. **Enable GitHub Pages** in repository Settings → Pages
+2. **Enable GitHub Pages** in repository Settings → Pages → Source: Deploy from a branch → main
 3. **Access your deployment** at `https://yourusername.github.io/typingpra.github.io`
 
 ### Option 2: Local Development
@@ -165,168 +238,207 @@ npx http-server -p 8080
 # Access at http://localhost:8080
 ```
 
-### Option 3: Download & Run
+### Option 3: Download & Run (Offline)
 
 1. **Download** the repository as ZIP from GitHub
 2. **Extract** files to your desired location
 3. **Open** `index.html` in your web browser
+4. **Start practicing** - No internet connection required!
+
+---
 
 ## 📋 System Requirements
 
-- **Modern Web Browser**: Chrome, Firefox, Safari, or Edge (latest versions)
-- **JavaScript Enabled**: Required for all functionality
-- **Local Storage**: For saving settings and statistics (no external dependencies)
-- **File API Support**: For custom code file uploads
-- **Canvas Support**: For interactive charts and graphs
+- **Modern Web Browser** - Chrome 80+, Firefox 75+, Safari 13+, Edge 80+
+- **JavaScript Enabled** - Required for all functionality
+- **Local Storage** - For saving settings and statistics
+- **File API Support** - For custom code file uploads
+- **Canvas Support** - For interactive charts and graphs
+
+**Note:** The app is fully functional offline after initial page load.
+
+---
 
 ## 🎯 How to Use
 
 ### Getting Started
 
-1. **Select a Practice Mode**: Choose from 12 different practice types
-2. **Configure Settings**: Adjust mode-specific parameters (word sets, trials, etc.)
-3. **Start Typing**: Begin typing to match the displayed content - timer starts automatically
-4. **Track Progress**: Monitor your WPM, accuracy, and mistakes in real-time
-5. **Review Results**: View detailed statistics, rankings, and improvement suggestions
+1. **🎮 Select Mode** - Choose from 12 practice types via the dropdown
+2. **⚙️ Configure** - Adjust mode-specific settings (word sets, trials, etc.)
+3. **⌨️ Start Typing** - Begin typing to match displayed content - timer starts automatically
+4. **📊 Monitor** - Track WPM, accuracy, and progress in real-time
+5. **🎉 Review** - View detailed statistics, rankings, and improvement suggestions
 
-### Advanced Features
+### Practice Mode Selection Guide
 
-- **📊 Statistics**: Comprehensive analytics with interactive graphs and heatmaps
-- **⚙️ Settings**: Theme switching, break configuration, countdown timers, and data management
-- **📖 Help**: Complete feature guide with usage tips and keyboard shortcuts
-- **🔧 Custom**: Practice with your own code files in Normal or TypeWell modes
+| Your Goal | Recommended Mode | Why |
+|-----------|------------------|-----|
+| Learn programming syntax | Programming Languages | Real code from 7 languages |
+| Build fundamental speed | TypeWell Original | Strict random character drills |
+| Improve English vocabulary | TypeWell English Words | NGSL word frequency practice |
+| Train reaction time | Initial Speed | Millisecond-precision measurement |
+| Practice specific words | Word Practice | Individual word focus |
+| Use your own content | Custom Code | Upload or paste any text |
 
 ### Keyboard Shortcuts
 
-- **Esc**: Reset and restart from beginning
-- **Enter** (during results): Continue to next page or finish session
-- **r** (during results): Retry current page
-- **R** (during results): Restart entire practice from beginning
-- **Enter** (during break): Resume from auto-break
+| Key | Action | When Available |
+|-----|--------|----------------|
+| **Esc** | Reset and restart from beginning | Always |
+| **Enter** | Continue to next page / finish | During results |
+| **r** | Retry current page | During results |
+| **R** | Restart entire practice from beginning | During results |
+| **Enter** | Resume from auto-break | During break dialog |
+| **Backspace** | Delete last character | Normal mode only |
+
+---
 
 ## 📚 Documentation
 
 ### Core Statistics Explained
 
-- **WPM (Words Per Minute)**: Calculated from correctly typed characters (1 word = 5 characters)
-- **Accuracy**: Percentage of correct keystrokes out of total attempts
-- **Character Progress**: Real-time tracking of completion status with visual indicators
-- **Reaction Time**: Millisecond-precise measurement for Initial Speed and Word Practice modes
-- **Lap Times**: Line-by-line completion tracking for TypeWell modes
+- **WPM (Words Per Minute)** - Calculated from correctly typed characters (1 word = 5 characters)
+- **Accuracy** - Percentage of correct keystrokes out of total attempts
+- **Character Progress** - Real-time tracking of completion status
+- **Reaction Time** - Millisecond-precise measurement for Initial Speed mode
+- **Lap Times** - Line-by-line completion tracking for TypeWell modes
 
 ### Custom Code Guidelines
 
-- **File Support**: Comprehensive format support for programming languages
-- **Size Limit**: Maximum 1MB file size for optimal performance
-- **Character Recommendations**: ASCII characters for optimal experience
-- **Mode Selection**: Choose between Normal (flexible) and TypeWell (strict) modes
-- **Encoding**: UTF-8 support with automatic multibyte character handling
+**Best Practices:**
+- Use ASCII characters for optimal display
+- Files up to 1MB are supported
+- UTF-8 encoding recommended
+- Choose Normal mode for learning, TypeWell for mastery
+- Save frequently used code snippets for quick access
+
+---
 
 ## 🔧 Technical Details
 
 ### Architecture
 
-- **Frontend Only**: Pure HTML5, CSS3, and JavaScript ES6+ - no backend required
-- **Modular Design**: Clean separation of concerns across 11 JavaScript modules
-- **Local Storage**: Browser-native storage for complete data persistence
-- **Progressive Enhancement**: Graceful degradation for older browsers
-- **Responsive Design**: Mobile-first approach with desktop optimization
+- **Frontend Only** - Pure HTML5, CSS3, JavaScript ES6+
+- **No build step required** - Open `index.html` directly
+- **Modular design** - 11 clean JavaScript modules
+- **Progressive enhancement** - Graceful degradation for older browsers
+- **Responsive design** - Mobile-first approach
 
-### Browser Storage
+### Browser Storage Structure
 
-- **Settings**: Theme preferences, break configurations, countdown timers
-- **Statistics**: Comprehensive practice history, TOP3 records, mistake character data
-- **Custom Code**: Saved code snippets with mode information and metadata
-- **Analytics Data**: Graph data, trend analysis, and performance metrics
-- **Data Retention**: 365 days in browser localStorage with export capability
+```
+localStorage Keys (prefix: typingPractice):
+├── settings          # Theme, break config, countdown
+├── stats             # Practice history, TOP3 records
+├── mistakeChars      # Character-level mistake data
+├── customCodes       # Saved custom code snippets
+└── version           # Data format version
+```
 
 ### JavaScript Module Structure
 
 ```
 static/js/
-├── chart.min.js      # Chart.js v3.9.1 (MIT License) - Interactive graphs
-├── snippets.js       # Programming language code definitions (7 languages)
-├── words.js          # NGSL English word database (2809 words, CC BY-SA 4.0)
-├── constants.js      # Application constants and global state management
-├── storage.js        # localStorage operations and data persistence
-├── utils.js          # Utility functions, timing, and random generation
-├── theme.js          # Theme management and CSS custom property handling
-├── stats.js          # Statistics tracking, graph generation, and analytics
-├── customCode.js     # Custom code management and file handling
-├── typing.js         # Core typing functionality and mode logic
-├── ui.js             # User interface management and event handling
-└── main.js           # Application initialization and module coordination
+├── chart.min.js      # Chart.js v3.9.1 (MIT License)
+├── snippets.js       # 7 programming language definitions
+├── words.js          # NGSL database (2809 words, CC BY-SA 4.0)
+├── constants.js      # Application constants & state
+├── storage.js        # localStorage operations
+├── utils.js          # Utilities & random generation
+├── theme.js          # Theme management
+├── stats.js          # Analytics & graph generation
+├── customCode.js     # File handling & custom code
+├── typing.js         # Core typing logic
+├── ui.js             # UI management
+└── main.js           # App initialization
 ```
 
 ### External Dependencies
 
-- **Chart.js v3.9.1** (MIT License): Interactive chart rendering with canvas support
-- **NGSL Word Database** (CC BY-SA 4.0): Scientific English vocabulary dataset
+- **Chart.js v3.9.1** ([MIT License](https://www.chartjs.org/)) - Interactive charts
+- **NGSL Word Database** ([CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)) - English vocabulary
+
+---
 
 ## 🎨 Customization
 
 ### Adding New Languages
 
 1. Edit `static/js/snippets.js`
-2. Add new language entry to `SNIPPETS` object with code samples
-3. Update language dropdown in `index.html`
-4. Test with both Normal and TypeWell modes
+2. Add new language to `SNIPPETS` object with code samples
+3. Update dropdown in `index.html`
+4. Test both Normal and TypeWell modes
+
+Example:
+```javascript
+SNIPPETS.golang = [
+    "package main\\n\\nimport \\"fmt\\"\\n\\nfunc main() {",
+    "    fmt.Println(\\"Hello, World!\\")",
+    "}"
+];
+```
 
 ### Theme Modification
 
-- Modify CSS custom properties in `static/style.css`
-- Colors, fonts, and spacing all configurable via CSS variables
-- Dynamic theme switching supported through JavaScript
-- Graph colors automatically adapt to theme changes
+Edit CSS custom properties in `static/style.css`:
 
-### Feature Extension
+```css
+:root {
+    --bg-color: #0d1117;
+    --text-color: #c9d1d9;
+    --correct-color: #3fb950;
+    --incorrect-color: #f85149;
+    /* ... more variables ... */
+}
+```
 
-- All JavaScript modules designed for easy extension and modification
-- Add new practice modes by extending existing module patterns
-- Statistics system supports new data types with minimal changes
-- UI components follow consistent design patterns for easy customization
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to:
+Contributions are welcome! Please:
 
-- **Report bugs** via GitHub Issues with detailed reproduction steps
-- **Suggest new features** or improvements with use case descriptions
-- **Submit pull requests** for enhancements following coding standards
-- **Share feedback** and usage experiences to improve user experience
-- **Translate** documentation or interface elements for broader accessibility
+- 🐛 **Report bugs** via GitHub Issues with reproduction steps
+- 💡 **Suggest features** with use case descriptions
+- 🔧 **Submit PRs** following existing code style
+- 🌍 **Translate** documentation for broader accessibility
+- ⭐ **Star the repo** if you find it useful!
 
 ### Development Guidelines
 
 - Follow existing code structure and naming conventions
-- Test thoroughly across different browsers and devices
-- Maintain backward compatibility with existing data formats
-- Document new features and API changes comprehensively
-- Consider performance impact, especially for mobile devices
+- Test across different browsers and screen sizes
+- Maintain backward compatibility with existing data
+- Document new features thoroughly
+- Consider mobile performance impact
+
+---
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source under the [MIT License](LICENSE).
 
 ### Third-party Licenses
 
 - **Chart.js v3.9.1**: MIT License
-- **NGSL Word Database**: CC BY-SA 4.0 License
+- **NGSL Word Database**: CC BY-SA 4.0 License (by Browne, Culligan & Phillips)
+
+---
 
 ## 🙏 Acknowledgments
 
-- **TypeWell Software**: Inspiration for strict typing practice methodology
-- **New General Service List (NGSL)**: High-quality English vocabulary database
-- **Chart.js Team**: Excellent charting library with extensive customization options
-- **GitHub Pages**: Free hosting platform enabling easy deployment and sharing
-- **Open Source Community**: Continuous inspiration and best practices
+- **TypeWell Software** - Inspiration for strict typing methodology
+- **New General Service List** - High-quality English vocabulary data
+- **Chart.js Team** - Excellent charting library
+- **GitHub Pages** - Free hosting platform
+- **Open Source Community** - Continuous inspiration and best practices
 
 ---
 
 <div align="center">
 
-**Made with ❤️ for developers and language learners who want to master their typing skills**
+**Made with ❤️ for developers and language learners**
 
-🚀 [**Start Practicing Now**](https://typingpra.github.io) 🚀
+🚀 **[Start Practicing Now](https://typingpra.github.io)** 🚀
 
 </div>

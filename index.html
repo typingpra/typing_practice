@@ -544,150 +544,394 @@
                 <button id="close-help" class="close-btn">✕</button>
             </div>
             <div class="help-sections">
+                <!-- Getting Started -->
                 <div class="help-section">
                     <h4>🚀 Getting Started</h4>
-                    <p>Select a programming language from the dropdown and start typing to begin your practice session.
-                        The timer starts automatically when you type your first character.</p>
+                    <p>Select a practice mode from the dropdown menu and start typing to begin your session. The timer
+                        starts automatically when you type your first character.</p>
+                    <p><strong>Quick Tips:</strong></p>
+                    <ul>
+                        <li>New to typing? Start with <strong>TypeWell Original - Lowercase</strong> mode</li>
+                        <li>Want to practice code? Select any <strong>Programming Language</strong> from the dropdown</li>
+                        <li>Need a challenge? Try <strong>TypeWell Mode</strong> (no backspace allowed!)</li>
+                    </ul>
                 </div>
 
+                <!-- Basic Controls -->
                 <div class="help-section">
                     <h4>⌨️ Basic Controls</h4>
                     <ul>
-                        <li><strong>Type:</strong> Just start typing to match the displayed code</li>
-                        <li><strong>Backspace:</strong> Fix mistakes by pressing Backspace</li>
-                        <li><strong>Enter:</strong> Press Enter for new lines (shown as ⏎)</li>
-                        <li><strong>Spaces:</strong> Regular spaces, incorrect ones show as ␣</li>
+                        <li><strong>Type:</strong> Start typing to match the displayed content</li>
+                        <li><strong>Backspace:</strong> Fix mistakes by pressing Backspace (Normal mode only)</li>
+                        <li><strong>Enter:</strong> Press Enter for new lines (shown as ⏎ symbol)</li>
+                        <li><strong>Spaces:</strong> Press Spacebar for spaces (incorrect ones display as ␣)</li>
+                        <li><strong>Tabs:</strong> Shown as → and require Tab key press</li>
                     </ul>
+                    <p><strong>Note:</strong> Japanese, Chinese, and Korean characters are automatically skipped during
+                        typing practice.</p>
                 </div>
 
+                <!-- Understanding Statistics -->
                 <div class="help-section">
                     <h4>📊 Understanding Statistics</h4>
                     <ul>
-                        <li><strong>WPM (Words Per Minute):</strong> Speed calculated from correctly typed characters (1
-                            word = 5 characters)</li>
+                        <li><strong>WPM (Words Per Minute):</strong> Typing speed calculated from correctly typed
+                            characters. Formula: (characters / 5) / (time in minutes)</li>
                         <li><strong>Accuracy:</strong> Percentage of correct keystrokes out of total keystrokes</li>
-                        <li><strong>Progress:</strong> Shows current position / total characters in the current page
+                        <li><strong>Progress:</strong> Shows current position / total characters (e.g., "125/500")</li>
+                        <li><strong>Timer:</strong> Elapsed time since first keystroke</li>
+                        <li><strong>Mistakes:</strong> Tracked per-character for detailed analysis</li>
+                    </ul>
+                </div>
+
+                <!-- Practice Modes Overview -->
+                <div class="help-section">
+                    <h4>🎮 Practice Modes</h4>
+                    <p>The app offers <strong>12 different practice modes</strong> across 6 categories:</p>
+                    <ul>
+                        <li><strong>💻 Programming Languages</strong> - Python, JavaScript, Java, C, C++, Rust, Lua</li>
+                        <li><strong>⌨️ TypeWell Original</strong> - Random character drills with 4 difficulty levels</li>
+                        <li><strong>🔤 TypeWell English Words</strong> - Vocabulary practice with NGSL word lists</li>
+                        <li><strong>⚡ Initial Speed</strong> - Single character reaction time training</li>
+                        <li><strong>📚 Word Practice</strong> - Individual word-by-word typing</li>
+                        <li><strong>🔧 Custom Code</strong> - Practice with your own files and text</li>
+                    </ul>
+                </div>
+
+                <!-- Programming Languages Mode -->
+                <div class="help-section">
+                    <h4>💻 Programming Languages Mode</h4>
+                    <p>Practice with real code from 7 popular programming languages:</p>
+                    <ul>
+                        <li><strong>Languages:</strong> Python, JavaScript, Java, C, C++, Rust, Lua</li>
+                        <li><strong>Page System:</strong> Long code is automatically split into 20-line pages</li>
+                        <li><strong>Mode Selection:</strong> Choose Normal (backspace allowed) or TypeWell (strict, no
+                            backspace)</li>
+                        <li><strong>Navigation:</strong> Use Page dropdown to jump between pages, or continue
+                            sequentially</li>
+                    </ul>
+                    <p><strong>Pro Tip:</strong> Use TypeWell mode for languages you want to master - it forces you to
+                        type accurately without relying on backspace!</p>
+                </div>
+
+                <!-- TypeWell Original Mode -->
+                <div class="help-section">
+                    <h4>⌨️ TypeWell Original Mode</h4>
+                    <p>Build fundamental typing skills with random character generation:</p>
+                    <ul>
+                        <li><strong>Format:</strong> 360 characters × 10 lines (36 chars per line)</li>
+                        <li><strong>Difficulty Levels:</strong>
+                            <ul>
+                                <li>📝 <strong>Lowercase</strong> - a-z + space, comma, period</li>
+                                <li>📝 <strong>Mixed Case</strong> - a-z, A-Z + space, comma, period</li>
+                                <li>📝 <strong>With Symbols</strong> - All alphanumeric + symbols</li>
+                                <li>🔢 <strong>Numbers Only</strong> - 0-9 focused practice</li>
+                            </ul>
                         </li>
-                        <li><strong>Timer:</strong> Time elapsed since you started typing</li>
+                        <li><strong>Strict Mode:</strong> Backspace is completely disabled - stop on mistakes</li>
+                        <li><strong>Countdown:</strong> Configurable 0-3 second preparation time before start</li>
+                        <li><strong>Lap Times:</strong> Line-by-line completion tracking displayed in results</li>
                     </ul>
                 </div>
 
+                <!-- TypeWell English Words Mode -->
                 <div class="help-section">
-                    <h4>📝 Custom Code</h4>
-                    <ol>
-                        <li>Click the <strong>"Custom"</strong> button to open the custom code editor</li>
-                        <li>Select the typing mode: <strong>Normal</strong> (allows backspace) or <strong>TypeWell
-                                Mode</strong> (strict, no backspace)</li>
-                        <li>Paste or type your code in the text area</li>
-                        <li>Enter a name and click <strong>"Save"</strong> to save it for later use</li>
-                        <li>Use <strong>"Load"</strong> to select previously saved code</li>
-                        <li>Use <strong>"Delete"</strong> to remove saved code you no longer need</li>
-                    </ol>
-                </div>
-
-                <div class="help-section">
-                    <h4>📚 Page Navigation</h4>
-                    <p>Long code is automatically split into pages of 20 lines each. You can:</p>
+                    <h4>🔤 TypeWell English Words Mode</h4>
+                    <p>Improve typing speed while learning practical English vocabulary:</p>
                     <ul>
-                        <li>Use the <strong>Page dropdown</strong> to jump to any page directly</li>
-                        <li>Click <strong>"Next"</strong> after completing a page to continue</li>
-                        <li>Click <strong>"Retry"</strong> to practice the current page again</li>
-                        <li>Click <strong>"Restart All"</strong> to start over from page 1</li>
+                        <li><strong>Format:</strong> 400 characters × 8 lines of English words</li>
+                        <li><strong>Word Sets:</strong>
+                            <ul>
+                                <li>📚 <strong>Top 500 Words</strong> - Most frequent everyday words</li>
+                                <li>📚 <strong>Top 1500 Words</strong> - Extended vocabulary coverage</li>
+                                <li>📚 <strong>All Words</strong> - Complete 2809 word database</li>
+                            </ul>
+                        </li>
+                        <li><strong>NGSL Database:</strong> Based on the New General Service List - scientifically
+                            validated frequency data</li>
+                        <li><strong>TypeWell Style:</strong> Strict mode with no backspace</li>
+                        <li><strong>Educational:</strong> Perfect for ESL learners and vocabulary building</li>
                     </ul>
+                    <p><strong>License:</strong> NGSL by Browne, Culligan & Phillips, licensed under CC BY-SA 4.0</p>
                 </div>
 
+                <!-- Initial Speed Mode -->
                 <div class="help-section">
-                    <h4>🧘 Auto Break Feature</h4>
-                    <p>Configure automatic break reminders to prevent fatigue:</p>
+                    <h4>⚡ Initial Speed Mode</h4>
+                    <p>Train your reaction time and finger reflexes with single-character drills:</p>
                     <ul>
-                        <li><strong>Setting:</strong> Configure character count threshold in Settings</li>
-                        <li><strong>Trigger:</strong> Activates when line reaches the set character count</li>
-                        <li><strong>Resume:</strong> Click "Continue" or press Enter to proceed</li>
-                        <li><strong>Stats:</strong> View current WPM, time, and character count during break</li>
-                        <li><strong>Disable:</strong> Set to 0 to turn off break reminders</li>
-                    </ul>
-                </div>
-
-                <div class="help-section">
-                    <h4>⌨️ Initial Speed Mode</h4>
-                    <p>Practice single character reaction times for typing speed improvement:</p>
-                    <ul>
-                        <li><strong>Character Sets:</strong> Choose between lowercase + punctuation (a-z, comma, period)
-                            or numbers only (0-9)</li>
-                        <li><strong>Trials:</strong> Configure number of trials from 5 to 20</li>
-                        <li><strong>Measurement:</strong> Precise reaction time measurement in milliseconds</li>
-                        <li><strong>No Mistakes:</strong> Must type correct character to proceed (no backspace)</li>
-                        <li><strong>Statistics:</strong> Detailed timing analysis with best/worst/average times</li>
+                        <li><strong>Character Sets:</strong>
+                            <ul>
+                                <li>🔤 <strong>Lowercase + Punctuation</strong> - a-z, comma, period</li>
+                                <li>🔢 <strong>Numbers Only</strong> - 0-9</li>
+                                <li>✋ <strong>Left Hand</strong> - qwertasdfgzxcvb keys</li>
+                                <li>✋ <strong>Right Hand</strong> - yuiophjklnm,. keys</li>
+                                <li>🎯 <strong>Hand Primitive</strong> - Specialized left/right reflex training</li>
+                            </ul>
+                        </li>
+                        <li><strong>Trials:</strong> Configure 5-20 attempts per session</li>
+                        <li><strong>Measurement:</strong> Millisecond-precise reaction time tracking</li>
+                        <li><strong>Anti-cheat:</strong> Detection and penalty for premature key presses</li>
+                        <li><strong>Statistics:</strong> Trial-by-trial breakdown with fastest/slowest/average times</li>
                         <li><strong>Rankings:</strong> TOP3 records based on average reaction time</li>
                     </ul>
+                    <p><strong>How it works:</strong> A character appears on screen. Press it as fast as possible. The
+                        time from character appearance to correct keystroke is measured.</p>
                 </div>
 
+                <!-- Word Practice Mode -->
                 <div class="help-section">
-                    <h4>📈 Statistics Tracking</h4>
-                    <p>Click the <strong>📊 Stats</strong> button to view your detailed practice history:</p>
+                    <h4>📚 Word Practice Mode</h4>
+                    <p>Individual word-by-word typing practice:</p>
                     <ul>
-                        <li><strong>Language sections:</strong> Click to expand/collapse each language</li>
-                        <li><strong>Part history:</strong> View all attempts for each page</li>
-                        <li><strong>Best records:</strong> Highlighted with 🏆 icon</li>
-                        <li><strong>Sorting:</strong> Click column headers to sort history tables</li>
+                        <li><strong>Word Sets:</strong> Top 500, Top 1500, or All 2809 NGSL words</li>
+                        <li><strong>Session Length:</strong> Configure 5-20 words per session</li>
+                        <li><strong>Real-time WPM:</strong> Immediate speed calculation per word</li>
+                        <li><strong>Results:</strong> Word-by-word performance with best/worst tracking</li>
+                        <li><strong>First Key Analysis:</strong> Reaction time measurement for word recognition</li>
+                    </ul>
+                    <p><strong>Perfect for:</strong> Improving word recognition speed and building typing fluency with
+                        common vocabulary.</p>
+                </div>
+
+                <!-- Custom Code -->
+                <div class="help-section">
+                    <h4>🔧 Custom Code Mode</h4>
+                    <p>Practice with your own content - perfect for learning specific codebases or documents:</p>
+                    <ol>
+                        <li>Click the <strong>"Custom"</strong> button to open the custom code panel</li>
+                        <li>Select typing mode: <strong>Normal</strong> (allows backspace) or <strong>TypeWell</strong>
+                            (strict, no backspace)</li>
+                        <li>Paste your code in the text area, or click <strong>"Choose File"</strong> to upload</li>
+                        <li>Enter a name and click <strong>"Save"</strong> to store for later use</li>
+                        <li>Use <strong>"Load"</strong> to select previously saved code from the dropdown</li>
+                        <li>Use <strong>"Delete"</strong> to remove saved code you no longer need</li>
+                    </ol>
+                    <p><strong>Supported Formats:</strong> .txt, .js, .py, .c, .cpp, .java, .rs, .lua, .md, .json, .html,
+                        .css, and more</p>
+                    <p><strong>Size Limit:</strong> Maximum 1MB per file</p>
+                    <p><strong>Note:</strong> Only ASCII text files are fully supported. Files with non-ASCII characters
+                        (Japanese, Chinese, etc.) may not display correctly.</p>
+                </div>
+
+                <!-- Page Navigation -->
+                <div class="help-section">
+                    <h4>📚 Page Navigation</h4>
+                    <p>Long code is automatically split into pages of 20 lines each for manageable practice sessions.</p>
+                    <p><strong>Navigation Options:</strong></p>
+                    <ul>
+                        <li><strong>Page dropdown:</strong> Jump to any page directly</li>
+                        <li><strong>Next button:</strong> Continue to next page after completing current</li>
+                        <li><strong>Retry button:</strong> Practice current page again</li>
+                        <li><strong>Restart All button:</strong> Start over from page 1</li>
+                    </ul>
+                    <p><strong>Result Card Buttons:</strong></p>
+                    <ul>
+                        <li><strong>Next (Enter):</strong> Proceed to next page or finish if last page</li>
+                        <li><strong>Retry (r):</strong> Practice current page again</li>
+                        <li><strong>Restart All (R):</strong> Start entire practice from beginning</li>
                     </ul>
                 </div>
 
+                <!-- Auto Break -->
                 <div class="help-section">
-                    <h4>🎨 Customization</h4>
+                    <h4>🧘 Auto Break Feature</h4>
+                    <p>Prevent fatigue with automatic break reminders:</p>
+                    <ul>
+                        <li><strong>Setting:</strong> Configure character count threshold in Settings (0 = disabled)</li>
+                        <li><strong>Trigger:</strong> Break dialog appears when you reach the set character count</li>
+                        <li><strong>Smart Detection:</strong> Monitors cumulative typing across sessions</li>
+                        <li><strong>Resume:</strong> Click "Continue" button or press Enter to proceed</li>
+                        <li><strong>Break Stats:</strong> View current WPM, time, and character count during break</li>
+                    </ul>
+                    <p><strong>Recommendation:</strong> Set to 1000-2000 characters for regular break reminders. Take
+                        breaks to rest your hands and eyes!</p>
+                </div>
+
+                <!-- Statistics Tracking -->
+                <div class="help-section">
+                    <h4>📈 Statistics & Analytics</h4>
+                    <p>Click the <strong>📊 Stats</strong> button to view comprehensive practice analytics:</p>
+
+                    <h5>📊 Graph Tabs:</h5>
+                    <ul>
+                        <li><strong>📈 Progress:</strong> Performance trends over time (line chart)</li>
+                        <li><strong>📊 Compare:</strong> Side-by-side language performance comparison (bar chart)</li>
+                        <li><strong>⚡ Speed:</strong> Initial Speed reaction time analysis (scatter plot)</li>
+                        <li><strong>⌨️ Keys:</strong> Keyboard heatmap + mistake frequency chart</li>
+                    </ul>
+
+                    <h5>🎯 Mistake Analysis:</h5>
+                    <ul>
+                        <li><strong>Overall Mistakes:</strong> Character-level tracking of all errors</li>
+                        <li><strong>Keyboard Heatmap:</strong> Visual QWERTY layout showing mistake frequency</li>
+                        <li><strong>Problem Characters:</strong> Top 8 most-mistyped characters</li>
+                        <li><strong>Initial Speed Mistakes:</strong> Separate tracking for reaction time mode</li>
+                    </ul>
+
+                    <h5>📋 Practice History:</h5>
+                    <ul>
+                        <li>Click language sections to expand/collapse</li>
+                        <li>View all attempts for each page/part</li>
+                        <li>Best records highlighted with 🏆 icon</li>
+                        <li>Click column headers to sort history tables</li>
+                    </ul>
+                </div>
+
+                <!-- Settings & Customization -->
+                <div class="help-section">
+                    <h4>⚙️ Settings & Customization</h4>
+                    <p>Click the <strong>⚙️ Settings</strong> button to customize your experience:</p>
+
+                    <h5>🎨 Appearance:</h5>
                     <ul>
                         <li><strong>Theme:</strong> Switch between Dark mode (🌙) and Light mode (☀️)</li>
-                        <li><strong>Text Wrap:</strong> Enable/disable line wrapping for long lines</li>
-                        <li><strong>Auto Break:</strong> Set character threshold for break reminders</li>
-                        <li><strong>Custom Mode:</strong> Choose between Normal typing (allows backspace) and TypeWell
-                            Mode (strict, no backspace)</li>
-                        <li><strong>Color coding:</strong>
-                            <span style="color: var(--correct-color);">Green = Correct</span>,
-                            <span
-                                style="color: var(--incorrect-color); background: var(--incorrect-bg); padding: 2px;">Red
-                                = Incorrect</span>,
-                            <span style="color: var(--pending-color);">Gray = Pending</span>,
-                            <span style="background: var(--current-bg); padding: 2px;">Blue = Current position</span>
-                        </li>
+                        <li><strong>Text Wrap:</strong> Enable/disable line wrapping for long code lines</li>
+                    </ul>
+
+                    <h5>⏱️ Practice Settings:</h5>
+                    <ul>
+                        <li><strong>Auto Break:</strong> Set character threshold for automatic break reminders (0-10000,
+                            0 = off)</li>
+                        <li><strong>TypeWell Countdown:</strong> Preparation time before TypeWell modes (0-3 seconds)</li>
+                    </ul>
+
+                    <h5>💾 Data Management:</h5>
+                    <ul>
+                        <li><strong>Export:</strong> Download all your data as JSON backup</li>
+                        <li><strong>Import:</strong> Restore data from previously exported JSON file</li>
+                        <li><strong>Delete All Data:</strong> Clear all settings, statistics, and custom codes</li>
+                    </ul>
+
+                    <h5>🎯 Color Coding:</h5>
+                    <ul>
+                        <li><span style="color: var(--correct-color);">🟢 Green</span> - Correctly typed characters</li>
+                        <li><span
+                                style="color: var(--incorrect-color); background: var(--incorrect-bg); padding: 2px;">🔴
+                                Red</span> - Incorrectly typed characters</li>
+                        <li><span style="color: var(--pending-color);">⚪ Gray</span> - Characters not yet typed</li>
+                        <li><span style="background: var(--current-bg); padding: 2px;">🔵 Blue background</span> -
+                            Current cursor position</li>
                     </ul>
                 </div>
 
+                <!-- Tips for Better Practice -->
                 <div class="help-section">
                     <h4>💡 Tips for Better Practice</h4>
                     <ul>
-                        <li><strong>Focus on accuracy first:</strong> Speed will come naturally with practice</li>
-                        <li><strong>Use proper finger positioning:</strong> Follow touch typing guidelines</li>
-                        <li><strong>Practice regularly:</strong> Short, frequent sessions are more effective</li>
-                        <li><strong>Take breaks:</strong> Use auto-break feature to prevent fatigue</li>
-                        <li><strong>Don't rush:</strong> Maintain steady rhythm and avoid hunting for keys</li>
-                        <li><strong>Review your stats:</strong> Identify patterns and areas for improvement</li>
-                        <li><strong>Try TypeWell Mode:</strong> Use strict mode for better accuracy training</li>
-                        <li><strong>Practice Initial Speed:</strong> Improve reaction times with single character drills
+                        <li><strong>🎯 Focus on accuracy first:</strong> Speed will come naturally with practice. Aim
+                            for 95%+ accuracy before pushing speed.</li>
+                        <li><strong>⌨️ Use proper finger positioning:</strong> Follow touch typing guidelines - home row
+                            position for best results.</li>
+                        <li><strong>📅 Practice regularly:</strong> Short, frequent sessions (15-30 minutes) are more
+                            effective than occasional long sessions.</li>
+                        <li><strong>🧘 Take breaks:</strong> Use the auto-break feature to prevent fatigue and RSI.
+                        </li>
+                        <li><strong>🐢 Don't rush:</strong> Maintain a steady rhythm. Avoid "hunting" for keys.</li>
+                        <li><strong>📊 Review your stats:</strong> Check the Stats panel regularly to identify patterns
+                            and weak points.</li>
+                        <li><strong>⛔ Try TypeWell Mode:</strong> Strict mode (no backspace) builds better accuracy
+                            habits.</li>
+                        <li><strong>⚡ Practice Initial Speed:</strong> Single character drills improve reaction time
+                            and reduce hesitation.</li>
+                        <li><strong>🔄 Mix it up:</strong> Practice different languages and modes to build versatility.
+                        </li>
+                        <li><strong>📈 Track progress:</strong> Use the Progress graph to see improvement over time.
                         </li>
                     </ul>
                 </div>
 
+                <!-- Keyboard Shortcuts -->
+                <div class="help-section">
+                    <h4>⌨️ Keyboard Shortcuts Reference</h4>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <th style="text-align: left; padding: 8px;">Key</th>
+                                <th style="text-align: left; padding: 8px;">Action</th>
+                                <th style="text-align: left; padding: 8px;">When</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px;"><strong>Esc</strong></td>
+                                <td style="padding: 8px;">Reset and restart from beginning</td>
+                                <td style="padding: 8px;">Anytime during practice</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px;"><strong>Enter</strong></td>
+                                <td style="padding: 8px;">Continue to next page / finish</td>
+                                <td style="padding: 8px;">During results display</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px;"><strong>r</strong></td>
+                                <td style="padding: 8px;">Retry current page</td>
+                                <td style="padding: 8px;">During results display</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px;"><strong>R</strong></td>
+                                <td style="padding: 8px;">Restart entire practice</td>
+                                <td style="padding: 8px;">During results display</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px;"><strong>Enter</strong></td>
+                                <td style="padding: 8px;">Resume from break</td>
+                                <td style="padding: 8px;">During break dialog</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px;"><strong>Enter / Space</strong></td>
+                                <td style="padding: 8px;">Start practice</td>
+                                <td style="padding: 8px;">On start screens</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px;"><strong>Backspace</strong></td>
+                                <td style="padding: 8px;">Delete last character</td>
+                                <td style="padding: 8px;">Normal mode only</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Troubleshooting -->
                 <div class="help-section">
                     <h4>🔧 Troubleshooting</h4>
                     <ul>
-                        <li><strong>App not responding:</strong> Refresh the page to reset</li>
-                        <li><strong>Wrong character highlighted:</strong> Make sure you're typing exactly what's shown
+                        <li><strong>App not responding:</strong> Refresh the page (F5 or Ctrl+R) to reset. Your data is
+                            safely stored.</li>
+                        <li><strong>Wrong character highlighted:</strong> Make sure you're typing exactly what's shown.
+                            Check for spaces (␣) and tabs (→).</li>
+                        <li><strong>Custom code not displaying:</strong> Ensure the file is plain text (UTF-8). Binary
+                            files won't work.</li>
+                        <li><strong>Stats not saving:</strong> Check that localStorage is enabled in your browser
+                            settings.</li>
+                        <li><strong>Break dialog not appearing:</strong> Check Auto Break setting is > 0 in Settings
+                            panel.</li>
+                        <li><strong>Graphs not showing:</strong> Ensure canvas is supported by your browser (all modern
+                            browsers support this).</li>
+                        <li><strong>Import not working:</strong> Make sure you're importing a valid JSON file exported
+                            from this app.</li>
+                        <li><strong>Dark/Light theme issues:</strong> Toggle the theme switch in Settings to refresh.
                         </li>
-                        <li><strong>Custom code not working:</strong> Check for proper syntax and formatting</li>
-                        <li><strong>Break not appearing:</strong> Check Auto Break setting in Settings panel</li>
                     </ul>
+                    <p><strong>Still having issues?</strong> Try clearing browser cache or opening in an incognito/private
+                        window. All data is stored locally - no server involved!</p>
                 </div>
 
+                <!-- Privacy & Data -->
                 <div class="help-section">
-                    <h4>⌨️ Keyboard Shortcuts</h4>
+                    <h4>🔒 Privacy & Data Storage</h4>
                     <ul>
-                        <li><strong>Esc:</strong> Reset and start over from the beginning</li>
-                        <li><strong>Enter (during results):</strong> Continue to next page or finish</li>
-                        <li><strong>r (during results):</strong> Retry current page</li>
-                        <li><strong>R (during results):</strong> Restart all from beginning</li>
-                        <li><strong>Enter (during break):</strong> Resume typing from break</li>
-                        <li><strong>Backspace:</strong> Undo last character (not available in TypeWell mode)</li>
+                        <li><strong>100% Private:</strong> All data is stored locally in your browser using localStorage
+                        </li>
+                        <li><strong>No Server:</strong> This app works completely offline - no data is ever sent to any
+                            server</li>
+                        <li><strong>Your Control:</strong> You own your data. Export it anytime as JSON backup</li>
+                        <li><strong>Retention:</strong> Data persists for 365 days (browser standard) or until you clear
+                            it</li>
+                        <li><strong>Cross-Device:</strong> Use Export/Import to move data between devices</li>
                     </ul>
+                    <p><strong>Data Stored:</strong> Practice statistics, TOP3 records, custom code files, theme
+                        preferences, mistake character data, and settings.</p>
                 </div>
             </div>
         </div>
